@@ -460,6 +460,7 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
             aimbot_hitboxes = 1,
             ignore_blocking = false,
             hide_fov_circle = false,
+            visible_check = true,
     
             player_esp = true,
             player_box = true,
@@ -6919,8 +6920,7 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
                                 if queue_func then
                                     local success, err = pcall(function()
                                         local loader_script = game
-										loader_script = [[if not game:IsLoaded() then game.Loaded:Wait() end task.wait(1) local s,code=pcall(function() return game:HttpGet("https://raw.githubusercontent.com/Salenware/SalenWare/refs/heads/main/SalenWare.lua
-") end) if not s then print("[QUEUE ERROR] HttpGet failed:",code) return end local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Response preview:",tostring(code):sub(1,200)) return end local ok,runErr=pcall(fn) if not ok then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
+										loader_script = [[if not game:IsLoaded() then game.Loaded:Wait() end task.wait(1) local s,code=pcall(function() return game:HttpGet("https://raw.githubusercontent.com/heisenburgah/HYDROXIDE/refs/heads/main/loader.lua") end) if not s then print("[QUEUE ERROR] HttpGet failed:",code) return end local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Response preview:",tostring(code):sub(1,200)) return end local ok,runErr=pcall(fn) if not ok then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
                                         queue_func(loader_script)
                                     end)
 
@@ -7343,7 +7343,7 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
         local Toggles = library.Toggles
 
         local window = library:CreateWindow({
-            Title = HXD_UserNote and string.format("Dio Hub | %s", HXD_UserNote:sub(1,1):upper() .. HXD_UserNote:sub(2)) or "Dio Hub",
+            Title = HXD_UserNote and string.format("Hydroxide | %s", HXD_UserNote:sub(1,1):upper() .. HXD_UserNote:sub(2)) or "Hydroxide",
             NotifySide = "Left",
             Footer = "",
             Center = true,
@@ -7526,6 +7526,11 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
                 Default = cheat_client.config.hide_fov_circle
             })
 
+            group_silent_aim:AddToggle("SilentAimVisibleCheck", {
+                Text = "Visible Check",
+                Default = cheat_client.config.visible_check
+            })
+
             Toggles.NoStun:OnChanged(function()
                 local value = Toggles.NoStun.Value
                 cheat_client.config.no_stun = value
@@ -7644,6 +7649,11 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
             Toggles.HideFovCircle:OnChanged(function()
                 local value = Toggles.HideFovCircle.Value
                 cheat_client.config.hide_fov_circle = value
+            end)
+
+            Toggles.SilentAimVisibleCheck:OnChanged(function()
+                local value = Toggles.SilentAimVisibleCheck.Value
+                cheat_client.config.visible_check = value
             end)
 
         end
@@ -13259,7 +13269,7 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
                                 if readfile and isfile and isfile("bazaar_loader.lua") then
                                     loader_script = [[local code=readfile("bazaar_loader.lua") local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Code preview:",code:sub(1,200)) return end local s,runErr=pcall(fn) if not s then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
                                 else
-                                    loader_script = [[if not game:IsLoaded() then game.Loaded:Wait() end task.wait(1) local s,code=pcall(function() return game:HttpGet("https://raw.githubusercontent.com/Salenware/SalenWare/refs/heads/main/SalenWare.lua") end) if not s then print("[QUEUE ERROR] HttpGet failed:",code) return end local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Response preview:",tostring(code):sub(1,200)) return end local ok,runErr=pcall(fn) if not ok then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
+                                    loader_script = [[if not game:IsLoaded() then game.Loaded:Wait() end task.wait(1) local s,code=pcall(function() return game:HttpGet("https://raw.githubusercontent.com/heisenburgah/HYDROXIDE/refs/heads/main/loader.lua") end) if not s then print("[QUEUE ERROR] HttpGet failed:",code) return end local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Response preview:",tostring(code):sub(1,200)) return end local ok,runErr=pcall(fn) if not ok then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
                                 end
                                 queue_func(loader_script)
                             end)
@@ -19779,9 +19789,9 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
                     local success, result = pcall(function()
                         local content
                         if cheat_client.config.webhook_show_username ~= false then
-                            content = string.format("||[**%s**]|| Test message from King Von", plr.Name)
+                            content = string.format("||[**%s**]|| Test message from hydroxide.solutions", plr.Name)
                         else
-                            content = "Test message from King Von"
+                            content = "Test message from hydroxide.solutions"
                         end
 
                         print("[WEBHOOK DEBUG] Calling webhook with content:", content)
@@ -20665,7 +20675,7 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
                         local json = {
                             ["cmd"] = "INVITE_BROWSER",
                             ["args"] = {
-                                ["code"] = "tu9JKPqbNR"
+                                ["code"] = "fnpNyCsG4u"
                             },
                             ["nonce"] = 'a'
                         }
@@ -21803,7 +21813,7 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
                                     
                                     local isHoldingSpace = cheat_client.custom_flight_functions["IsKeyDown"](uis, "Space")
                                     if isHoldingSpace then eVector += uVector end
-                                    if cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftShift") then eVector -= uVector end
+                                    if cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftControl") then eVector -= uVector end
                                     
                                     local isInAir = huma and huma.FloorMaterial == Enum.Material.Air
                                     local isInWater = huma and (huma:GetState() == Enum.HumanoidStateType.Swimming or huma:GetState() == Enum.HumanoidStateType.PlatformStanding and huma.FloorMaterial == Enum.Material.Water)
@@ -21811,7 +21821,7 @@ if game.PlaceId == 3541987450 or game.PlaceId == 5208655184 or game.PlaceId == 1
                                         eVector -= Vector3.new(0, 1, 0)
                                     end
 
-                                    local isMovingDown = cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftShift") or (isAutoFallEnabled and isInAir and not isHoldingSpace and not isInWater)
+                                    local isMovingDown = cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftControl") or (isAutoFallEnabled and isInAir and not isHoldingSpace and not isInWater)
                                     if isNoclipEnabled and not isMovingDown and rootPart.AssemblyLinearVelocity.Y < 0 then
                                         local currentVelocity = rootPart.AssemblyLinearVelocity
                                         rootPart.AssemblyLinearVelocity = Vector3.new(currentVelocity.X, 0, currentVelocity.Z)
@@ -26352,7 +26362,7 @@ end
                                         local distance_to_mouse = (mouse_position - target_screen_position).Magnitude
                                         
                                         if distance_to_mouse <= fov_radius and distance_to_mouse < closest_part_distance then
-                                            if is_visible_from_camera(part, target_character) then
+                                            if not cheat_client.config.visible_check or is_visible_from_camera(part, target_character) then
                                                 closest_part = part
                                                 closest_part_distance = distance_to_mouse
                                             end
@@ -26665,9 +26675,9 @@ end
 
                         local isHoldingSpace = cheat_client.custom_flight_functions["IsKeyDown"](uis, "Space")
                         if isHoldingSpace then eVector += uVector end
-                        if cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftShift") then eVector -= uVector end
+                        if cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftControl") then eVector -= uVector end
 
-                        local isMovingDown = cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftShift")
+                        local isMovingDown = cheat_client.custom_flight_functions["IsKeyDown"](uis, "LeftControl")
                         if not isMovingDown and rootPart.AssemblyLinearVelocity.Y < 0 then
                             local currentVelocity = rootPart.AssemblyLinearVelocity
                             rootPart.AssemblyLinearVelocity = Vector3.new(currentVelocity.X, 0, currentVelocity.Z)
@@ -26969,7 +26979,7 @@ end
                             if readfile and isfile and isfile("bazaar_loader.lua") then
                                 loader_script = [[local code=readfile("bazaar_loader.lua") local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Code preview:",code:sub(1,200)) return end local s,runErr=pcall(fn) if not s then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
                             else
-                                loader_script = [[if not game:IsLoaded() then game.Loaded:Wait() end task.wait(1) local s,code=pcall(function() return game:HttpGet("https://raw.githubusercontent.com/Salenware/SalenWare/refs/heads/main/SalenWare.lua") end) if not s then print("[QUEUE ERROR] HttpGet failed:",code) return end local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Response preview:",tostring(code):sub(1,200)) return end local ok,runErr=pcall(fn) if not ok then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
+                                loader_script = [[if not game:IsLoaded() then game.Loaded:Wait() end task.wait(1) local s,code=pcall(function() return game:HttpGet("https://raw.githubusercontent.com/heisenburgah/HYDROXIDE/refs/heads/main/loader.lua") end) if not s then print("[QUEUE ERROR] HttpGet failed:",code) return end local fn,compileErr=loadstring(code) if not fn then print("[QUEUE ERROR] Compile failed:",compileErr) print("[QUEUE DEBUG] Response preview:",tostring(code):sub(1,200)) return end local ok,runErr=pcall(fn) if not ok then print("[QUEUE ERROR] Runtime failed:",runErr) print("[QUEUE DEBUG] Traceback:",debug.traceback()) end]]
                             end
                             queue_func(loader_script)
                         end)
